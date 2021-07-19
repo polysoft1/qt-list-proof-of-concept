@@ -4,7 +4,12 @@
 
 MyListModel::MyListModel() {
     for (int i = 1; i < 100; i++) {
-        m_list.append(Message{ "user" + QString::number(i), "Message " +  QString::number(i) });
+        std::string msg = "Message " +  std::to_string(i);
+        for (int j = 0; j < i; j++) {
+            msg.append(std::string(" word"));
+        }
+        m_list.append(Message{ "user" + QString::number(i), QString::fromStdString(msg) });
+        //m_list.append(Message{ "user" + QString::number(i), QString("test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test ") });
     }
 }
 // Copy constructor needed for Q_DECLARE_METATYPE for QVariant
