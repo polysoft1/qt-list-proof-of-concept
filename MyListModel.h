@@ -34,6 +34,7 @@ public:
 
 private:
     QVector<Message> m_list;
+    void addItem(int itemNum);
 };
 
 Q_DECLARE_METATYPE(MyListModel*)
