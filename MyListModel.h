@@ -17,7 +17,8 @@ public:
 
     enum MyRoles {
         UsernameRole = Qt::UserRole + 1,
-        MessageRole
+        MessageRole,
+        SelfRole
     };
 
     using QAbstractListModel::QAbstractListModel;
@@ -34,7 +35,7 @@ public:
 
 private:
     QVector<Message> m_list;
-    void addItem(int itemNum);
+    void addItem(int user, int num, bool self);
 };
 
 Q_DECLARE_METATYPE(MyListModel*)

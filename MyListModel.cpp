@@ -1,21 +1,23 @@
 #include "MyListModel.h"
 
 #include <QDebug>
+#include <stdlib.h>
 
 MyListModel::MyListModel() {
     for (int i = 1; i < 100; i++) {
-        addItem(i);
-        addItem(100 - i);
+        addItem(i, i, rand() % 3 == 0);
+        addItem(i, rand() % 100, rand() % 3 == 0);
     }
 }
 
 
-void MyListModel::addItem(int i) {
-    std::string msg = "Message " +  std::to_string(i);
-    for (int j = 0; j < i; j++) {
+void MyListModel::addItem(int user, int num, bool self) {
+    std::string msg = "Message " +  std::to_string(num);
+    for (int j = 0; j < num; j++) {
         msg.append(std::string(" word"));
     }
-    m_list.append(Message{ "user" + QString::number(i), QString::fromStdString(msg) });
+    QString userStr = self ? "Myself" : "User" +QString::number(user);
+    m_list.append(Message{ userStr, QString::fromStdString(msg), self });
 }
 
 // Copy constructor needed for Q_DECLARE_METATYPE for QVariant
@@ -29,6 +31,7 @@ QHash<int, QByteArray> MyListModel::roleNames() const {
     QHash<int, QByteArray> hash;
     hash[UsernameRole] = "user";
     hash[MessageRole] = "msg";
+    hash[SelfRole] = "self";
     return hash;
 }
 
@@ -67,6 +70,7 @@ QVariant MyListModel::data(const QModelIndex & index, int role = Qt::DisplayRole
     const Message &item = m_list.at(index.row());
     if (role == UsernameRole) return item.getUser();
     if (role == MessageRole) return item.getMsg();
+    if (role == SelfRole) return item.getSelf();
 
     return {};
 }
