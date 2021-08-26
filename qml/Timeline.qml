@@ -31,16 +31,18 @@ ListView {
         }
 
         property var profilePicSize: 50;
+        property var profilePicTopAlign: true
 
         Rectangle {
             id: profile_pic
 
             anchors.left: if (!model.self) { parent.left }
-            anchors.bottom: msg_content.bottom
+            anchors.bottom: if (!profilePicTopAlign) msg_content.bottom
+            anchors.top: if (profilePicTopAlign) msg_content.top
             anchors.right: if (model.self) { parent.right }
             Layout.preferredHeight: 40
             Layout.preferredWidth: 40
-            Layout.alignment: Qt.AlignBottom
+            Layout.alignment: if (profilePicTopAlign) { Qt.AlignBottom } else {Qt.AlignTop}
             height: profilePicSize
             width: profilePicSize
             radius: profilePicSize / 2 + 1
@@ -53,18 +55,19 @@ ListView {
 
             anchors.left: if (!model.self) { profile_pic.right }
             anchors.right: if (model.self) { profile_pic.left }
-            anchors.bottom: msg_content.bottom
+            anchors.bottom: if (!profilePicTopAlign) { msg_content.bottom }
+            anchors.top: if (profilePicTopAlign) { msg_content.top }
             anchors.leftMargin: -5
             anchors.rightMargin: -5
             width: 20
             height: 20
             ShapePath {
-                startX: 0
-                startY: 20
+                startX: if (model.self) {20} else { 0 }
+                startY: if (profilePicTopAlign) { 0 } else { 20}
                 fillColor: "#DDD"
-                PathLine { x: if (model.self) { 20 } else { 0 } y: 20 } // bottom left
-                PathLine { x: if (model.self) { 0 } else { 20 } y: 0 } // top right
-                PathLine { x: if (model.self) { 0} else { 20 } y: 20 } // bottom right
+                PathLine { x: if (model.self) { 20 } else { 0 } y: if (profilePicTopAlign) { 0 } else { 20}  } // bottom left
+                PathLine { x: if (model.self) { 0 } else { 20 } y: if (profilePicTopAlign) { 20 } else { 0}  } // top right
+                PathLine { x: if (model.self) { 0} else { 20 } y: if (profilePicTopAlign) { 0 } else { 20}  } // bottom right
             }
         }
 
