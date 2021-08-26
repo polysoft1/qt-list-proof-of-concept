@@ -1,6 +1,7 @@
 import QtQuick 2.0
 import QtQuick.Layouts 1.11
 import QtQuick.Shapes 1.0
+import QtQuick.Controls 2.12
 
 import '.'
 
@@ -119,6 +120,10 @@ ListView {
         }
     }
 
+    ScrollBar.vertical: ScrollBar {
+        minimumSize: 0.03
+        //policy: ScrollBar.AlwaysOn
+    }
     ScrollHelper {
         id: scrollHelper
         flickable: listView
