@@ -2,7 +2,10 @@ import QtQuick 2.0
 import QtQuick.Layouts 1.11
 import QtQuick.Shapes 1.0
 
+import '.'
+
 // TODO: Use https://doc.qt.io/qt-5/qml-qtquick-systempalette.html
+
 
 // This is the component that allows multiple items stacked on top of each other as a list.
 ListView {
@@ -13,9 +16,7 @@ ListView {
     }
     spacing: 13 // Spacing between messages
     width: parent.width
-    // interactive: false
-    // Good example of how to setup scrolling to get rid of the annoying inertia.
-    // https://github.com/Nheko-Reborn/nheko/blob/5b460861b126a49f1e186c8b59ffb0faf0109aab/resources/qml/ScrollHelper.qml
+    interactive: false
 
     // This is the item of the list
     delegate: Rectangle {
@@ -114,4 +115,11 @@ ListView {
             }
         }
     }
+
+    ScrollHelper {
+        id: scrollHelper
+        flickable: listView
+        anchors.fill: listView
+    }
+
 }

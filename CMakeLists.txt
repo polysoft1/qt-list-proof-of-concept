@@ -49,9 +49,12 @@ endif()
 
 target_link_libraries(TimelineExperiment PRIVATE Qt${QT_VERSION_MAJOR}::Widgets Qt${QT_VERSION_MAJOR}::QuickWidgets)
 
-add_custom_command(TARGET TimelineExperiment POST_BUILD COMMAND ${CMAKE_COMMAND} -E copy_if_different
-    ${CMAKE_SOURCE_DIR}/qml/Timeline.qml
-    ${CMAKE_BINARY_DIR}/qml/Timeline.qml)
+set(QML_FILES Timeline.qml ScrollHelper.qml)
+set(FILES_TO_COPY "")
+foreach(item ${QML_FILES})
+    add_custom_command(TARGET TimelineExperiment POST_BUILD COMMAND ${CMAKE_COMMAND} -E copy_if_different
+        ${CMAKE_SOURCE_DIR}/qml/${item} ${CMAKE_BINARY_DIR}/qml/${item})
+endforeach()
 
 add_custom_command(TARGET TimelineExperiment
                      PRE_BUILD
