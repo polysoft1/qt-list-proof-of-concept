@@ -12,24 +12,15 @@ import '.'
 ListView {
     id: listView
     model: MyModel
-    onContentHeightChanged: {
-        console.log("listView height: " + parent.height)
-    }
     spacing: 13 // Spacing between messages
-    width: parent.width
+    width: if (parent != null) parent.width
     interactive: false
 
     // This is the item of the list
     delegate: Rectangle {
         id: list_row
-        anchors.right: if (model.self) { parent.right }
+        anchors.right: if (model.self && parent != null) { parent.right }
         height: childrenRect.height
-        // Sometimes when scrolling, the parent is null.
-        width: if (parent == null) {
-                   childrenRect.width
-        } else {
-                   Math.min(childrenRect.width, parent.width)
-        }
 
         // Settings
         property var profilePicSize: 50;
