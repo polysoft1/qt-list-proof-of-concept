@@ -31,8 +31,14 @@ ListView {
                    Math.min(childrenRect.width, parent.width)
         }
 
+        // Settings
         property var profilePicSize: 50;
         property var profilePicTopAlign: true
+        property var showSelfProfilePic: true
+
+        // Calculated values
+        property var showingProfilePic: showSelfProfilePic || !model.self
+        property var actualProfilePicSize: if (showingProfilePic) { profilePicSize } else { 10 }
 
         Rectangle {
             id: profile_pic
@@ -45,8 +51,9 @@ ListView {
             Layout.preferredWidth: 40
             Layout.alignment: if (profilePicTopAlign) { Qt.AlignBottom } else {Qt.AlignTop}
             height: profilePicSize
-            width: profilePicSize
+            width: actualProfilePicSize
             radius: profilePicSize / 2 + 1
+            visible: showingProfilePic
 
             color: "#6F6"
         }
@@ -111,7 +118,7 @@ ListView {
                     text: model.msg
                     wrapMode: Text.Wrap
                     // Shrink if the message would not fill the entire width available.
-                    width: Math.min(listView.width - (profilePicSize) - 40, dummy_text.width)
+                    width: Math.min(listView.width - (actualProfilePicSize) - 40, dummy_text.width)
                     readOnly: true
                     selectByMouse: true
 
