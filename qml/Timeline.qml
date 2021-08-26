@@ -11,7 +11,7 @@ ListView {
     onContentHeightChanged: {
         console.log("listView height: " + parent.height)
     }
-    spacing: 5 // Spacing between messages
+    spacing: 13 // Spacing between messages
     width: parent.width
     // interactive: false
     // Good example of how to setup scrolling to get rid of the annoying inertia.
@@ -19,6 +19,7 @@ ListView {
 
     // This is the item of the list
     delegate: Rectangle {
+        id: list_row
         anchors.right: if (model.self) { parent.right }
         height: childrenRect.height
         // Sometimes when scrolling, the parent is null.
@@ -27,6 +28,8 @@ ListView {
         } else {
                    Math.min(childrenRect.width, parent.width)
         }
+
+        property var profilePicSize: 50;
 
         Rectangle {
             id: profile_pic
@@ -37,9 +40,9 @@ ListView {
             Layout.preferredHeight: 40
             Layout.preferredWidth: 40
             Layout.alignment: Qt.AlignBottom
-            height: 40
-            width: 40
-            radius: 20
+            height: profilePicSize
+            width: profilePicSize
+            radius: profilePicSize / 2 + 1
 
             color: "#6F6"
         }
@@ -76,7 +79,7 @@ ListView {
             height: column.height + 15
             width: column.width + 20
             radius: 5
-            anchors.rightMargin: -5
+            anchors.rightMargin: -10
 
             // The column includes the name and message.
             Column {
@@ -103,7 +106,7 @@ ListView {
                     text: model.msg
                     wrapMode: Text.Wrap
                     // Shrink if the message would not fill the entire width available.
-                    width: Math.min(listView.width - (20 * 3) - 20, dummy_text.width)
+                    width: Math.min(listView.width - (profilePicSize) - 40, dummy_text.width)
                     readOnly: true
                     selectByMouse: true
 
