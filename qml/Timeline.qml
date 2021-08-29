@@ -16,16 +16,16 @@ ListView {
     width: if (parent != null) parent.width
     interactive: false
 
+    // Settings
+    property var profilePicSize: 50
+    property var profilePicTopAlign: true
+    property var showSelfProfilePic: true
+
     // This is the item of the list
     delegate: Rectangle {
         id: list_row
         anchors.right: if (model.self && parent != null) { parent.right }
         height: childrenRect.height
-
-        // Settings
-        property var profilePicSize: 50;
-        property var profilePicTopAlign: true
-        property var showSelfProfilePic: true
 
         // Calculated values
         property var showingProfilePic: showSelfProfilePic || !model.self
