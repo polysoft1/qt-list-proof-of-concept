@@ -14,17 +14,24 @@ class MainWindow : public QWidget
 private slots:
     void onProfilePicLocationClicked(bool toggled );
     void onShowSelfPicClicked(bool toggled );
+    void onThemeClicked(bool toggled );
     void onProfilePicSizeChange(int newSize);
 
 private:
     QGroupBox* getProfilePicOptionSettings();
     QGroupBox* getSelfPicOptionSettings();
     QGroupBox* getProfilePicSizeSetting();
+    QGroupBox* getThemeSetting();
     QQuickWidget * quick;
     QLabel * profilePicSizeLabel;
 
+    QApplication* app;
+
+    QPalette darkPalette;
+    QPalette lightPalette;
+
 public:
-    MainWindow(QWidget *parent = nullptr);
+    MainWindow(QApplication* app, QWidget *parent = nullptr);
     ~MainWindow();
 };
 #endif // MAINWINDOW_H
