@@ -1,31 +1,21 @@
 #include "message.h"
 
-Message::Message(QString user, QString msg, bool self)
-    : user_(user), msg_(msg), isSelf(self)
-{
-
-}
-
 Message::Message()
-    : Message("default user", "default msg", false)
+    : Message(0, "empty")
 {
-
+}
+Message::Message(long timestamp, QString msg)
+    : timestamp(timestamp), msg(msg)
+{
+}
+Message::Message(const Message& other)
+    : timestamp(other.timestamp), msg(other.msg)
+{
 }
 
-Message::Message(const Message& old) {
-    this->user_ = old.user_;
-    this->msg_ = old.msg_;
-    this->isSelf = old.isSelf;
-}
-
-
-QString Message::getUser() const {
-    return user_;
-}
 QString Message::getMsg() const {
-    return msg_;
+    return msg;
 }
-bool Message::getSelf() const {
-    return isSelf;
+long Message::getTimestamp() const {
+    return timestamp;
 }
-

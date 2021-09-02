@@ -27,23 +27,24 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 find_package(QT NAMES Qt6 Qt5 COMPONENTS QuickWidgets Widgets Gui REQUIRED)
 find_package(Qt${QT_VERSION_MAJOR} COMPONENTS QuickWidgets Widgets Gui REQUIRED)
 
-if(ANDROID)
-  add_library(TimelineExperiment SHARED
+set(SOURCE_FILES
     main.cpp
     mainwindow.cpp
     mainwindow.h
     message.cpp
-    MyListModel.h
-    MyListModel.cpp
+    messagegroup.cpp
+    MessageGroupModel.h
+    MessageGroupModel.cpp
+    MessageModel.h
+    MessageModel.cpp)
+
+if(ANDROID)
+  add_library(TimelineExperiment SHARED
+    ${SOURCE_FILES}
   )
 else()
   add_executable(TimelineExperiment
-    main.cpp
-    mainwindow.cpp
-    mainwindow.h
-    message.cpp
-    MyListModel.h
-    MyListModel.cpp
+    ${SOURCE_FILES}
   )
 endif()
 

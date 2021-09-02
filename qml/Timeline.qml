@@ -12,20 +12,25 @@ import '.'
 Rectangle {
     id: background
     color: "#eceff1"
+    width: if (parent != null) parent.width
+    height: if (parent != null) parent.height
 
     // Settings
+    property var groupSpacing: 13
+    property var messageSpacing: 4
     property var profilePicSize: 50
+    property var bubbleRadius: 5
     property var profilePicTopAlign: true
     property var showSelfProfilePic: true
     property var msgBackgroundColor: "#FFF"
     property var selfMsgBackgroundColor: "#cfd8dc"
 
     ListView {
-        id: listView
+        id: groupListView
         model: MyModel
-        spacing: 13 // Spacing between messages
-        width: if (parent != null) parent.width
-        height: if (parent != null) parent.height
+        spacing: background.groupSpacing // Spacing between messages
+        width: background.width
+        height: background.height
         interactive: false
 
         // This is the item of the list
@@ -91,13 +96,13 @@ Rectangle {
                 Layout.alignment: Qt.AlignTop
                 height: column.height + 15
                 width: column.width + 20
-                radius: 5
+                radius: background.bubbleRadius
                 anchors.rightMargin: -10
 
                 // The column includes the name and message.
                 Column {
                     id: column
-                    spacing: 4
+                    spacing: background.messageSpacing
                     anchors.horizontalCenter: parent.horizontalCenter
                     anchors.verticalCenter: parent.verticalCenter
 
@@ -108,24 +113,38 @@ Rectangle {
                         font.weight: Font.Bold
                         color: Palette.text
                     }
-                    // Dummy text to get the size
-                    Text {
-                        id: dummy_text
-                        text: model.msg
-                        visible: false
-                        color: Palette.text
-                    }
-                    // The message
-                    TextEdit {
-                        id: msg
-                        text: model.msg
-                        color: Palette.text
-                        wrapMode: Text.Wrap
-                        // Shrink if the message would not fill the entire width available.
-                        width: Math.min(listView.width - (actualProfilePicSize) - 40, dummy_text.width)
-                        readOnly: true
-                        selectByMouse: true
+                    // The messages
+                    Repeater/*ListView*/ {
+                        id: msgListView
+                        model: msg_model
+                        height: childrenRect.height
+                        width: childrenRect.width
 
+                        delegate: Rectangle {
+                            height: childrenRect.height + 3
+                            implicitWidth: msg.width
+                            color: selfBackgroundColor
+
+                            // Dummy text to get the size
+                            Text {
+                                id: dummy_text
+                                text: model.msg
+                                visible: false
+                                color: Palette.text
+                            }
+
+                            TextEdit {
+                                id: msg
+                                text: model.msg
+                                color: Palette.text
+                                wrapMode: Text.Wrap
+                                // Shrink if the message would not fill the entire width available.
+                                width: Math.min(background.width - (actualProfilePicSize) - 40, dummy_text.width)
+                                readOnly: true
+                                selectByMouse: true
+
+                            }
+                        }
                     }
                 }
             }
@@ -137,8 +156,8 @@ Rectangle {
         }
         ScrollHelper {
             id: scrollHelper
-            flickable: listView
-            anchors.fill: listView
+            flickable: groupListView
+            anchors.fill: groupListView
         }
 
     }

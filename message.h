@@ -2,21 +2,21 @@
 #define MESSAGE_H
 
 #include <QString>
-#include <QObject>
 
-class Message : public QObject
+
+class Message
 {
+private:
+    long timestamp;
+    QString msg;
+
 public:
     Message();
+    Message(long timestamp, QString msg);
     Message(const Message& old);
-    Message(QString user, QString msg, bool self);
-    QString user_ = "User Name";
-    QString msg_ = "Message here";
-    bool isSelf = false;
 
-    QString getUser() const;
     QString getMsg() const;
-    bool getSelf() const;
+    long getTimestamp() const;
 };
 
 #endif // MESSAGE_H

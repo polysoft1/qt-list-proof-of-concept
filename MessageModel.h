@@ -1,27 +1,25 @@
-#ifndef MYLISTMODEL_H
-#define MYLISTMODEL_H
+#ifndef MESSAGEMODEL_H
+#define MESSAGEMODEL_H
 
 #include <QAbstractListModel>
 #include <QHash>
 #include <QByteArray>
+#include "messagemodel.h"
 #include "message.h"
 
-class MyListModel : public QAbstractListModel
+class MessageModel : public QAbstractListModel
 {
     Q_OBJECT
     Q_ENUMS(MyRoles)
 public:
-    MyListModel();
+    MessageModel();
     // Copy constructor needed for Q_DECLARE_METATYPE for QVariant
-    MyListModel(const MyListModel &other);
+    MessageModel(const MessageModel &other);
 
     enum MyRoles {
-        UsernameRole = Qt::UserRole + 1,
-        MessageRole,
-        SelfRole
+        MsgRole = Qt::UserRole + 1,
+        TimestampRole
     };
-
-    using QAbstractListModel::QAbstractListModel;
 
     // The way that you need to move data to and from this QML is
     // to have every bit of data be a role.
@@ -35,9 +33,7 @@ public:
 
 private:
     QVector<Message> m_list;
-    void addItem(int user, int num, bool self);
 };
 
-Q_DECLARE_METATYPE(MyListModel*)
 
-#endif // MYLISTMODEL_H
+#endif // MESSAGEMODEL_H

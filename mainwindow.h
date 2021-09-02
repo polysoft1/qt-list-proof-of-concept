@@ -16,14 +16,23 @@ private slots:
     void onShowSelfPicClicked(bool toggled );
     void onThemeClicked(bool toggled );
     void onProfilePicSizeChange(int newSize);
+    void onBorderRadiusChange(int newSize);
+    void onGroupSpacingChange(int newSize);
+    void onMessageSpacingChange(int newSize);
 
 private:
     QGroupBox* getProfilePicOptionSettings();
     QGroupBox* getSelfPicOptionSettings();
     QGroupBox* getProfilePicSizeSetting();
+    QGroupBox* getBorderRadiusSetting();
+    QGroupBox* getGroupSpacingSetting();
+    QGroupBox* getMessageSpacingSetting();
     QGroupBox* getThemeSetting();
     QQuickWidget * quick;
     QLabel * profilePicSizeLabel;
+    QLabel * borderRadiusLabel;
+    QLabel * groupSpacingLabel;
+    QLabel * messageSpacingLabel;
 
     QApplication* app;
 

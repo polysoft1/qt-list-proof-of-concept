@@ -8,7 +8,7 @@
 #include <QLabel>
 #include <QRadioButton>
 #include <QQuickItem>
-#include "MyListModel.h"
+#include "MessageGroupModel.h"
 
 MainWindow::MainWindow(QApplication* app, QWidget *parent)
     : QWidget(parent), app(app)
@@ -21,9 +21,8 @@ MainWindow::MainWindow(QApplication* app, QWidget *parent)
     darkPalette.setColor(QPalette::AlternateBase,   QColor( 45,  45,  45));
     darkPalette.setColor(QPalette::PlaceholderText, QColor(127, 127, 127));
     darkPalette.setColor(QPalette::Text,            QColor(255, 255, 255));
-    //darkPalette.setColor(QPalette::Text,            QColor(220, 220, 220));
     darkPalette.setColor(QPalette::Button,          QColor( 60,  60,  60));
-    darkPalette.setColor(QPalette::ButtonText,      QColor(212, 212, 212));
+    darkPalette.setColor(QPalette::ButtonText,      QColor(245, 245, 245));
     darkPalette.setColor(QPalette::BrightText,      QColor(255, 255, 255));
     darkPalette.setColor(QPalette::Highlight,       QColor( 38,  79, 120));
     darkPalette.setColor(QPalette::HighlightedText, QColor(240, 240, 240));
@@ -44,7 +43,7 @@ MainWindow::MainWindow(QApplication* app, QWidget *parent)
     // IMPORTANT to reduce resource usage:
     // https://forum.qt.io/topic/98806/own-thread-for-each-qquickwidget/4
 
-    MyListModel * model = new MyListModel;
+    MessageGroupModel * model = new MessageGroupModel;
     quick = new QQuickWidget(this);
     quick->rootContext()->setContextProperty("MyModel",  QVariant::fromValue(model));
     quick->rootContext()->setContextProperty("Palette",  QVariant::fromValue(lightPalette));
@@ -53,7 +52,10 @@ MainWindow::MainWindow(QApplication* app, QWidget *parent)
     quick->setSource(QUrl::fromLocalFile("qml/Timeline.qml"));
     settingsLayout->addWidget(getProfilePicOptionSettings());
     settingsLayout->addWidget(getSelfPicOptionSettings());
+    settingsLayout->addWidget(getGroupSpacingSetting());
+    settingsLayout->addWidget(getMessageSpacingSetting());
     settingsLayout->addWidget(getProfilePicSizeSetting());
+    settingsLayout->addWidget(getBorderRadiusSetting());
     settingsLayout->addWidget(getThemeSetting());
     quick->setResizeMode(QQuickWidget::SizeRootObjectToView);
     quick->show();
@@ -138,17 +140,70 @@ QGroupBox* MainWindow::getProfilePicSizeSetting() {
     return groupBox;
 }
 
+QGroupBox* MainWindow::getBorderRadiusSetting() {
+    QGroupBox *groupBox = new QGroupBox(tr("Bubble Border Radius"));
+
+    QSlider * slider = new QSlider(Qt::Orientation::Horizontal);
+    slider->setMaximum(12);
+    borderRadiusLabel = new QLabel();
+
+    QHBoxLayout *hbox = new QHBoxLayout;
+    hbox->addWidget(borderRadiusLabel, 0);
+    hbox->addWidget(slider, 1);
+    groupBox->setLayout(hbox);
+
+    connect(slider, &QSlider::valueChanged, this,
+            &MainWindow::onBorderRadiusChange);
+
+    slider->setValue(5);
+    return groupBox;
+}
+
+QGroupBox* MainWindow::getGroupSpacingSetting() {
+    QGroupBox *groupBox = new QGroupBox(tr("Group Spacing"));
+
+    QSlider * slider = new QSlider(Qt::Orientation::Horizontal);
+    slider->setMaximum(100);
+    groupSpacingLabel = new QLabel();
+
+    QHBoxLayout *hbox = new QHBoxLayout;
+    hbox->addWidget(groupSpacingLabel, 0);
+    hbox->addWidget(slider, 1);
+    groupBox->setLayout(hbox);
+
+    connect(slider, &QSlider::valueChanged, this,
+            &MainWindow::onGroupSpacingChange);
+
+    slider->setValue(13);
+    return groupBox;
+}
+
+QGroupBox* MainWindow::getMessageSpacingSetting() {
+    QGroupBox *groupBox = new QGroupBox(tr("Message Spacing"));
+
+    QSlider * slider = new QSlider(Qt::Orientation::Horizontal);
+    slider->setMaximum(20);
+    messageSpacingLabel = new QLabel();
+
+    QHBoxLayout *hbox = new QHBoxLayout;
+    hbox->addWidget(messageSpacingLabel, 0);
+    hbox->addWidget(slider, 1);
+    groupBox->setLayout(hbox);
+
+    connect(slider, &QSlider::valueChanged, this,
+            &MainWindow::onMessageSpacingChange);
+
+    slider->setValue(5);
+    return groupBox;
+}
+
 void MainWindow::onProfilePicLocationClicked( bool toggled) {
-    //quick->setSource(QUrl::fromLocalFile("qml/Timeline.qml"));
     quick->rootObject()->setProperty("profilePicTopAlign", toggled);
 }
 void MainWindow::onShowSelfPicClicked( bool toggled) {
-    //quick->setSource(QUrl::fromLocalFile("qml/Timeline.qml"));
     quick->rootObject()->setProperty("showSelfProfilePic", toggled);
 }
 void MainWindow::onThemeClicked( bool isLight) {
-    //quick->setSource(QUrl::fromLocalFile("qml/Timeline.qml"));
-
     if (isLight) {
         quick->rootObject()->setProperty("color", "#eceff1");
         quick->rootObject()->setProperty("msgBackgroundColor", "#FFF");
@@ -164,9 +219,22 @@ void MainWindow::onThemeClicked( bool isLight) {
     }
 }
 void MainWindow::onProfilePicSizeChange(int newSize) {
-    //quick->setSource(QUrl::fromLocalFile("qml/Timeline.qml"));
     quick->rootObject()->setProperty("profilePicSize", newSize);
     profilePicSizeLabel->setText(QString::number(newSize));
+}
+
+void MainWindow::onBorderRadiusChange(int newSize) {
+    quick->rootObject()->setProperty("bubbleRadius", newSize);
+    borderRadiusLabel->setText(QString::number(newSize));
+}
+
+void MainWindow::onGroupSpacingChange(int newSize) {
+    quick->rootObject()->setProperty("groupSpacing", newSize);
+    groupSpacingLabel->setText(QString::number(newSize));
+}
+void MainWindow::onMessageSpacingChange(int newSize) {
+    quick->rootObject()->setProperty("messageSpacing", newSize);
+    messageSpacingLabel->setText(QString::number(newSize));
 }
 
 MainWindow::~MainWindow()
