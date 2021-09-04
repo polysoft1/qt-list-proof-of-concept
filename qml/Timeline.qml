@@ -237,11 +237,11 @@ Rectangle {
                                 DropShadow {
                                     id: options_dropshadow
                                     anchors.fill: msg_options_and_info
-                                    horizontalOffset: 2
+                                    horizontalOffset: 1
                                     verticalOffset: 1
                                     radius: 4.0
-                                    samples: 5
-                                    color: "#80000000"
+                                    samples: 7
+                                    color: "#60000000"
                                     source: msg_options_and_info
                                     visible: false
                                 }
