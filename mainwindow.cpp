@@ -183,6 +183,7 @@ QGroupBox* MainWindow::getMessageSpacingSetting() {
 
     QSlider * slider = new QSlider(Qt::Orientation::Horizontal);
     slider->setMaximum(20);
+    slider->setMinimum(-5);
     messageSpacingLabel = new QLabel();
 
     QHBoxLayout *hbox = new QHBoxLayout;
@@ -193,7 +194,7 @@ QGroupBox* MainWindow::getMessageSpacingSetting() {
     connect(slider, &QSlider::valueChanged, this,
             &MainWindow::onMessageSpacingChange);
 
-    slider->setValue(5);
+    slider->setValue(10);
     return groupBox;
 }
 

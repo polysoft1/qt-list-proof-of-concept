@@ -1,0 +1,7 @@
+<RCC>
+    <qresource prefix="/timeline">
+        <file>images/dot_menu_vertical.svg</file>
+        <file>images/edit.svg</file>
+        <file>images/reply.svg</file>
+    </qresource>
+</RCC>
