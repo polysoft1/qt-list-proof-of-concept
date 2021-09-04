@@ -8,7 +8,7 @@
 #include <QLabel>
 #include <QRadioButton>
 #include <QQuickItem>
-#include "MessageGroupModel.h"
+#include "messagegroupmodel.h"
 
 MainWindow::MainWindow(QApplication* app, QWidget *parent)
     : QWidget(parent), app(app)

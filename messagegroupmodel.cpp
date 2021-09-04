@@ -1,4 +1,4 @@
-#include "MessageGroupModel.h"
+#include "messagegroupmodel.h"
 
 #include <QDebug>
 #include <stdlib.h>

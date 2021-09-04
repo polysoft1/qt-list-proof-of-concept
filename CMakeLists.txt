@@ -37,10 +37,10 @@ set(SOURCE_FILES
     mainwindow.h
     message.cpp
     messagegroup.cpp
-    MessageGroupModel.h
-    MessageGroupModel.cpp
-    MessageModel.h
-    MessageModel.cpp)
+    messagegroupmodel.h
+    messagegroupmodel.cpp
+    messagemodel.h
+    messagemodel.cpp)
 
 if(ANDROID)
   add_library(TimelineExperiment SHARED

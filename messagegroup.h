@@ -3,7 +3,7 @@
 
 #include <QString>
 #include <QObject>
-#include "MessageModel.h"
+#include "messagemodel.h"
 
 class MessageGroup
 {
