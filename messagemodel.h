@@ -4,7 +4,6 @@
 #include <QAbstractListModel>
 #include <QHash>
 #include <QByteArray>
-#include "messagemodel.h"
 #include "message.h"
 
 class MessageModel : public QAbstractListModel
@@ -31,8 +30,9 @@ public:
 
     QVariant data(const QModelIndex & index, int role) const override;
 
-private:
-    QVector<Message> m_list;
+    Q_INVOKABLE QVariant getFirstTimestamp();
+
+    QVector<Message> msgList;
 };
 
 

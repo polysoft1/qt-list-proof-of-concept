@@ -11,7 +11,7 @@ class MessageGroupModel : public QAbstractListModel
     Q_OBJECT
     Q_ENUMS(MyRoles)
 public:
-    MessageGroupModel();
+    MessageGroupModel(QString selfUser, uint64_t maxCombineDiff = 1000 * 60 * 10);
     // Copy constructor needed for Q_DECLARE_METATYPE for QVariant
     MessageGroupModel(const MessageGroupModel &other);
 
@@ -33,9 +33,12 @@ public:
 
     QVariant data(const QModelIndex & index, int role) const override;
 
+    void addMessage(Message msg);
+
 private:
-    QVector<MessageGroup> m_list;
-    void addItem(int user, bool self);
+    QString selfUser;
+    uint64_t maxCombineDiff;
+    QVector<MessageGroup> groupList;
 };
 
 Q_DECLARE_METATYPE(MessageGroupModel*)

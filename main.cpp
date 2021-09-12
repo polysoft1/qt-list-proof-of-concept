@@ -9,7 +9,7 @@ int main(int argc, char *argv[])
     //Q_INIT_RESOURCE(icons);
     QApplication::setStyle(QStyleFactory::create("Fusion"));
 
-    MainWindow w(&a);
+    MainWindow w(&a, "Myself");
     w.show();
     return a.exec();
 }

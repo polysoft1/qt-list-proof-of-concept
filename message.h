@@ -2,21 +2,23 @@
 #define MESSAGE_H
 
 #include <QString>
-
+#include <string>
 
 class Message
 {
 private:
-    long timestamp;
+    uint64_t timestamp;
     QString msg;
+    QString user;
 
 public:
     Message();
-    Message(long timestamp, QString msg);
+    Message(uint64_t timestamp, QString msg, QString user);
     Message(const Message& old);
 
     QString getMsg() const;
-    long getTimestamp() const;
+    QString getUser() const;
+    uint64_t getTimestamp() const;
 };
 
 #endif // MESSAGE_H

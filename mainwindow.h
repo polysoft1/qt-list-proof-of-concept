@@ -7,6 +7,8 @@
 #include <QQuickWidget>
 #include <QSlider>
 #include <QLabel>
+#include "message.h"
+#include "messagegroupmodel.h"
 
 class MainWindow : public QWidget
 {
@@ -21,6 +23,8 @@ private slots:
     void onMessageSpacingChange(int newSize);
 
 private:
+    void generateMessages();
+
     QGroupBox* getProfilePicOptionSettings();
     QGroupBox* getSelfPicOptionSettings();
     QGroupBox* getProfilePicSizeSetting();
@@ -35,12 +39,15 @@ private:
     QLabel * messageSpacingLabel;
 
     QApplication* app;
+    std::string selfName;
 
     QPalette darkPalette;
     QPalette lightPalette;
 
+    MessageGroupModel * model;
+
 public:
-    MainWindow(QApplication* app, QWidget *parent = nullptr);
+    MainWindow(QApplication* app, std::string selfName, QWidget *parent = nullptr);
     ~MainWindow();
 };
 #endif // MAINWINDOW_H

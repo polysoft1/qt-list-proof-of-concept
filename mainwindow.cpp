@@ -8,10 +8,14 @@
 #include <QLabel>
 #include <QRadioButton>
 #include <QQuickItem>
-#include "messagegroupmodel.h"
+#include <stdlib.h>
+#include <stdint.h>
 
-MainWindow::MainWindow(QApplication* app, QWidget *parent)
-    : QWidget(parent), app(app)
+#include <chrono>
+#include <random>
+
+MainWindow::MainWindow(QApplication* app, std::string selfName, QWidget *parent)
+    : QWidget(parent), app(app), selfName(selfName)
 {
     this->resize(1000, 800);
 
@@ -43,7 +47,8 @@ MainWindow::MainWindow(QApplication* app, QWidget *parent)
     // IMPORTANT to reduce resource usage:
     // https://forum.qt.io/topic/98806/own-thread-for-each-qquickwidget/4
 
-    MessageGroupModel * model = new MessageGroupModel;
+    model = new MessageGroupModel(QString::fromStdString(selfName));
+    generateMessages();
     quick = new QQuickWidget(this);
     quick->rootContext()->setContextProperty("MyModel",  QVariant::fromValue(model));
     quick->rootContext()->setContextProperty("Palette",  QVariant::fromValue(lightPalette));
@@ -59,6 +64,46 @@ MainWindow::MainWindow(QApplication* app, QWidget *parent)
     settingsLayout->addWidget(getThemeSetting());
     quick->setResizeMode(QQuickWidget::SizeRootObjectToView);
     quick->show();
+}
+
+void MainWindow::generateMessages() {
+    std::string users[4] = { selfName, "User1", "User2", "User3" };
+    int numBlobs = 100;
+    int msgIndex = 0;
+
+    std::random_device rd;
+    std::mt19937 gen(rd());
+    std::uniform_int_distribution<uint64_t> dis(1, 1000 * 60 * 60 * 8); // up to 8 hours
+
+    // Start 30 minutes ago
+    uint64_t ms = std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::system_clock::now().time_since_epoch()).count() - (30 * 60 * 1000);
+
+    int lastUser = -1;
+    for (int i = 0; i < numBlobs; i++) {
+        int userIndex = rand() % 4;
+        std::string userName = users[userIndex];
+
+        int numMsgsInBlob = rand() % 3 + 1;
+
+        for (int j = 0; j < numMsgsInBlob; j++) {
+
+            int msgSize = rand() % 30 + 1;
+            std::string msg = "Message + " + std::to_string(msgIndex++) + " size " +  std::to_string(msgSize);
+            for (int j = 0; j < msgSize; j++) {
+                msg.append(std::string(" word"));
+            }
+
+            model->addMessage(Message {ms, QString::fromStdString(msg), QString::fromStdString(userName)});
+
+            ms += rand() % (20 * 1000); // Add up to 20 seconds.
+        }
+
+        if (rand() % 3 == 0 || lastUser == userIndex) {
+            // 1/3 chance of a long delay
+            ms += dis(gen);
+        }
+        lastUser = userIndex;
+    }
 }
 
 QGroupBox *MainWindow::getProfilePicOptionSettings()

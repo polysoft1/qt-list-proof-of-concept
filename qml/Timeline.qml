@@ -119,7 +119,7 @@ Rectangle {
                         Text {
                             anchors.verticalCenter: parent.verticalCente
                             id: group_timestamp
-                            text: "Timestamp"
+                            text: new Date(Number(msg_model.getFirstTimestamp())).toLocaleTimeString(Locale.LongFormat)
                             color: Palette.text
                             opacity: 0.7
                             font.pointSize: 7
@@ -206,11 +206,15 @@ Rectangle {
                                             Text {
                                                 id: msg_timestamp
                                                 anchors.verticalCenter: parent.verticalCenter
-                                                text: "Timestamp"
+                                                // Show only date for first message due to the time already being shown.
+                                                text: if (index != 0) {
+                                                          new Date(Number(model.timestamp)).toLocaleTimeString(Locale.LongFormat)
+                                                      } else {
+                                                          new Date(Number(model.timestamp)).toLocaleDateString(Locale.LongFormat)
+                                                      }
                                                 color: Palette.text
                                                 opacity: 0.7
                                                 font.pointSize: 7
-                                                visible: index != 0
                                             }
 
                                             Image {
