@@ -62,6 +62,6 @@ QVariant MessageModel::getFirstTimestamp() {
     if (msgList.isEmpty()) {
         return 0;
     } else {
-        return msgList.first().getTimestamp();
+        return  QVariant::fromValue(msgList.first().getTimestamp());
     }
 }

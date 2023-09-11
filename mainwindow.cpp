@@ -63,6 +63,8 @@ MainWindow::MainWindow(QApplication* app, std::string selfName, QWidget *parent)
     settingsLayout->addWidget(getBorderRadiusSetting());
     settingsLayout->addWidget(getThemeSetting());
     quick->setResizeMode(QQuickWidget::SizeRootObjectToView);
+    quick->setWindowFlag(Qt::WindowStaysOnTopHint, true);
+    quick->setWindowFlag(Qt::X11BypassWindowManagerHint, true);
     quick->show();
 }
 
